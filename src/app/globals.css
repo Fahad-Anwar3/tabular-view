@@ -1,26 +1,96 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 25, 41;
+  --background-end-rgb: 10, 25, 41;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .data-table {
+    @apply w-full border-collapse;
+  }
+
+  .data-table th {
+    @apply bg-dashboard-tableHeader text-dashboard-headerText font-semibold text-sm py-3 px-4 text-left border-b border-dashboard-tableBorder;
+  }
+
+  .data-table td {
+    @apply py-3 px-4 border-b border-dashboard-tableBorder;
+  }
+
+  .data-table tr:nth-child(even) {
+    @apply bg-dashboard-tableRowAlt;
+  }
+
+  .data-table tr:hover {
+    @apply bg-dashboard-hover cursor-pointer;
+  }
+
+  .positive-value {
+    @apply text-[#1eb980];
+  }
+
+  .negative-value {
+    @apply text-[#ff5252];
+  }
+
+  .neutral-value {
+    @apply text-gray-400;
+  }
+
+  .strong-sell {
+    @apply text-[#ff5252] flex items-center;
+  }
+
+  .strong-buy {
+    @apply text-[#1eb980] flex items-center;
+  }
+
+  .buy {
+    @apply text-[#4caf50] flex items-center;
+  }
+
+  .sell {
+    @apply text-[#f44336] flex items-center;
+  }
+
+  .neutral {
+    @apply text-gray-400 flex items-center;
+  }
+
+  .header-button {
+    @apply bg-transparent hover:bg-dashboard-hover text-white p-2 rounded-full;
+  }
+
+  .header-select {
+    @apply bg-dashboard-header border border-dashboard-border text-white rounded px-2 py-1 text-sm;
+  }
+
+  .search-input {
+    @apply bg-dashboard-background border border-dashboard-border text-white rounded px-3 py-1 text-sm;
+  }
+
+  .footer-link {
+    @apply text-gray-400 hover:text-white;
+  }
+
+  .footer-heading {
+    @apply font-bold mb-4 text-white;
+  }
+
+  .footer-icon-button {
+    @apply w-8 h-8 rounded-full border border-white/30 flex items-center justify-center hover:bg-dashboard-hover;
+  }
+
+  .language-button {
+    @apply text-sm text-gray-400 hover:text-white;
+  }
 }
