@@ -31,14 +31,11 @@ export default function VirtualizedTable({ data, rowHeight = 48, headerHeight = 
         style={style}
         className="h-12 flex items-center border-b border-dashboard-border hover:bg-dashboard-hover hover:cursor-pointer"
       >
-        {/* Row content would go here, similar to the DataTable cell renderers */}
-        {/* This is a simplified example */}
         <div className="w-[120px] pl-4">{item.symbol}</div>
         <div className="w-[180px]">{item.company}</div>
         <div className={`w-[100px] ${item.chgPercent < 0 ? "text-red-500" : "text-green-500"}`}>
           {item.chgPercent.toFixed(2)}%
         </div>
-        {/* Add more columns as needed */}
       </div>
     )
   }
