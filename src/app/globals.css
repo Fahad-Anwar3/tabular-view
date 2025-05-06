@@ -19,19 +19,19 @@ body {
   }
 
   .data-table th {
-    @apply bg-dashboard-tableHeader text-dashboard-headerText font-semibold text-sm py-3 px-4 text-left border-b border-dashboard-tableBorder;
+    @apply bg-[#0f2132] text-[#26dbd6] font-medium text-xs uppercase py-3 px-4 text-left border-b border-[#1e3a5f];
   }
 
   .data-table td {
-    @apply py-3 px-4 border-b border-dashboard-tableBorder;
+    @apply py-3 px-4 border-b border-[#1e3a5f];
   }
 
   .data-table tr:nth-child(even) {
-    @apply bg-dashboard-tableRowAlt;
+    @apply bg-[#0c1e33];
   }
 
   .data-table tr:hover {
-    @apply bg-dashboard-hover cursor-pointer;
+    @apply bg-[#1e3a5f] cursor-pointer;
   }
 
   .positive-value {
@@ -67,15 +67,15 @@ body {
   }
 
   .header-button {
-    @apply bg-transparent hover:bg-dashboard-hover text-white p-2 rounded-full;
+    @apply bg-transparent hover:bg-[#1e3a5f] text-white p-2 rounded-full;
   }
 
   .header-select {
-    @apply bg-dashboard-header border border-dashboard-border text-white rounded px-2 py-1 text-sm;
+    @apply bg-[#0f2132] border border-[#1e3a5f] text-white rounded px-2 py-1 text-sm;
   }
 
   .search-input {
-    @apply bg-dashboard-background border border-dashboard-border text-white rounded px-3 py-1 text-sm;
+    @apply bg-[#0a1929] border border-[#1e3a5f] text-white rounded px-3 py-1 text-sm;
   }
 
   .footer-link {
@@ -87,7 +87,7 @@ body {
   }
 
   .footer-icon-button {
-    @apply w-8 h-8 rounded-full border border-white/30 flex items-center justify-center hover:bg-dashboard-hover;
+    @apply w-8 h-8 rounded-full border border-white/30 flex items-center justify-center hover:bg-[#1e3a5f];
   }
 
   .language-button {
