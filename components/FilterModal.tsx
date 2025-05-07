@@ -14,12 +14,10 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   const [primaryListingOn, setPrimaryListingOn] = useState(true)
   const [tradingDayOn, setTradingDayOn] = useState(false)
 
-  // Close modal with ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
     }
-
     window.addEventListener("keydown", handleEsc)
     return () => window.removeEventListener("keydown", handleEsc)
   }, [onClose])
@@ -27,22 +25,19 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50   p-4">
       <div className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-dashboard-background border border-dashboard-border rounded-md">
-        {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-dashboard-border">
-          <h2 className="text-2xl font-bold text-white">Filters</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-white">Filters</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white">
             <X className="h-6 w-6" />
           </button>
         </div>
-
-        {/* Tabs */}
-        <div className="flex border-b border-dashboard-border">
+        <div className="flex overflow-x-auto border-b border-dashboard-border">
           {["All", "Descriptive", "Financials", "Technicals"].map((tab) => (
             <button
               key={tab}
-              className={`px-8 py-3 text-sm font-medium ${
+              className={`px-4 md:px-8 py-3 text-sm font-medium whitespace-nowrap ${
                 activeTab === tab ? "text-white border-b-2 border-[#26dbd6]" : "text-gray-400 hover:text-white"
               }`}
               onClick={() => setActiveTab(tab)}
@@ -51,8 +46,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
             </button>
           ))}
         </div>
-
-        {/* Search and Reset */}
         <div className="p-4 flex flex-col md:flex-row justify-between gap-4">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -66,15 +59,12 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               className="w-full bg-dashboard-background border border-dashboard-border rounded-md py-2 pl-10 pr-3 text-white"
             />
           </div>
-          <button className="flex items-center justify-center gap-2 bg-dashboard-background border border-dashboard-border rounded-md px-4 py-2 text-white hover:bg-dashboard-hover">
+          <button className="flex items-center justify-center gap-2 bg-dashboard-background border border-dashboard-border rounded-md px-4 py-2 text-white hover:bg-[#1e3a5f] transition-colors">
             <RotateCcw className="h-4 w-4" />
             <span>RESET ALL</span>
           </button>
         </div>
-
-        {/* Filter Rows */}
         <div className="p-4 space-y-6">
-          {/* Row 1 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
@@ -93,7 +83,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 </div>
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
               <div className="relative">
@@ -112,8 +101,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Row 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Primary Listing</label>
@@ -131,7 +118,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 <span className="ml-2 text-white">Turned on</span>
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Current trading day</label>
               <div className="flex items-center">
@@ -149,8 +135,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Row 3 - Range Slider */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
@@ -172,7 +156,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 />
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
               <div className="relative">
@@ -191,8 +174,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Row 4 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
@@ -211,7 +192,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 </div>
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
               <div className="flex items-center gap-2">
@@ -233,8 +213,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Row 5 - Condition and Type */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -255,7 +233,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                     </div>
                   </div>
                 </div>
-
                 <div className="space-y-2">
                   <label className="text-sm text-gray-400">Type</label>
                   <div className="relative">
@@ -274,7 +251,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                   </div>
                 </div>
               </div>
-
               <div className="space-y-2">
                 <label className="text-sm text-gray-400">Value</label>
                 <input
@@ -284,7 +260,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 />
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
               <div className="relative">
@@ -303,8 +278,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Row 6 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
@@ -326,7 +299,6 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
                 />
               </div>
             </div>
-
             <div className="space-y-2">
               <label className="text-sm text-gray-400">Symbol Type</label>
               <div className="relative">
