@@ -1,56 +1,91 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import type React from "react"
 
-export function useVirtualizedTable<T>(data: T[], itemsPerPage = 20) {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortField, setSortField] = useState<keyof T | null>(null)
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+import { useCallback, useState, useEffect, useRef } from "react"
 
-  const totalPages = Math.ceil(data.length / itemsPerPage)
+interface UseVirtualizedTableOptions {
+  itemCount: number
+  itemHeight: number
+  overscan?: number
+  containerRef: React.RefObject<HTMLElement>
+}
 
-  const sortedData = useCallback(() => {
-    if (!sortField) return data
+interface VirtualItem {
+  index: number
+  start: number
+  size: number
+}
 
-    return [...data].sort((a, b) => {
-      const aValue = a[sortField]
-      const bValue = b[sortField]
+export function useVirtualizedTable({ itemCount, itemHeight, overscan = 3, containerRef }: UseVirtualizedTableOptions) {
+  const [scrollTop, setScrollTop] = useState(0)
+  const [containerHeight, setContainerHeight] = useState(0)
+  const requestRef = useRef<number | null>(null)
 
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1
-      return 0
-    })
-  }, [data, sortField, sortDirection])
+  // Calculate visible items based on scroll position with optimized performance
+  const calculateVisibleItems = useCallback(() => {
+    if (!containerRef.current) return { virtualItems: [], startIndex: 0, endIndex: 0 }
 
-  const paginatedData = useCallback(() => {
-    const sorted = sortedData()
-    const startIndex = (currentPage - 1) * itemsPerPage
-    return sorted.slice(startIndex, startIndex + itemsPerPage)
-  }, [sortedData, currentPage, itemsPerPage])
+    const currentScrollTop = containerRef.current.scrollTop || 0
+    const currentContainerHeight = containerRef.current.clientHeight || 0
 
-  const handleSort = useCallback(
-    (field: keyof T) => {
-      if (sortField === field) {
-        setSortDirection(sortDirection === "asc" ? "desc" : "asc")
-      } else {
-        setSortField(field)
-        setSortDirection("asc")
+    setScrollTop(currentScrollTop)
+    setContainerHeight(currentContainerHeight)
+
+    const startIndex = Math.max(0, Math.floor(currentScrollTop / itemHeight) - overscan)
+    const endIndex = Math.min(
+      itemCount - 1,
+      Math.ceil((currentScrollTop + currentContainerHeight) / itemHeight) + overscan,
+    )
+
+    const virtualItems: VirtualItem[] = []
+    for (let i = startIndex; i <= endIndex; i++) {
+      virtualItems.push({
+        index: i,
+        start: i * itemHeight,
+        size: itemHeight,
+      })
+    }
+
+    return { virtualItems, startIndex, endIndex }
+  }, [itemCount, itemHeight, overscan, containerRef])
+
+  const [state, setState] = useState(() => calculateVisibleItems())
+
+  // Update visible items when scroll position changes with requestAnimationFrame for better performance
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const handleScroll = () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current)
       }
-    },
-    [sortField, sortDirection],
-  )
 
-  const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page)
-  }, [])
+      requestRef.current = requestAnimationFrame(() => {
+        setState(calculateVisibleItems())
+      })
+    }
+
+    const container = containerRef.current
+    container.addEventListener("scroll", handleScroll)
+    window.addEventListener("resize", handleScroll)
+
+    // Initial calculation
+    handleScroll()
+
+    return () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current)
+      }
+      container.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("resize", handleScroll)
+    }
+  }, [calculateVisibleItems, containerRef])
 
   return {
-    currentPage,
-    totalPages,
-    paginatedData: paginatedData(),
-    handleSort,
-    handlePageChange,
-    sortField,
-    sortDirection,
+    virtualItems: state.virtualItems,
+    totalHeight: itemCount * itemHeight,
+    startIndex: state.startIndex,
+    endIndex: state.endIndex,
   }
 }

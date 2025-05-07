@@ -4,25 +4,24 @@ import Image from "next/image"
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0E1621] py-8 border-t border-dashboard-border">
+    <footer className="bg-[#0E1621] py-6 md:py-8 border-t border-dashboard-border">
       <div className="container mx-auto px-4">
-        <div className="flex mx-10 justify-evenly my-20">
-          <div className="flex justify-center space-x-4 mb-8 mr-16">
+        <div className="flex flex-col md:flex-row md:mx-10 md:justify-evenly my-10 md:my-20 gap-8">
+          <div className="flex justify-center space-x-4 mb-8 md:mr-16">
             <button className="footer-icon-button">
-              <Image src="/discode.png" alt="ok" width={32} height={32} />
+              <Image src="/discode.png" alt="Discord" width={32} height={32} />
             </button>
             <button className="footer-icon-button">
-              <Image src="/youtube.png" alt="ok" width={32} height={32} />
+              <Image src="/youtube.png" alt="YouTube" width={32} height={32} />
             </button>
             <button className="footer-icon-button">
-              <Image src="/linkedin.png" alt="ok" width={32} height={32} />
+              <Image src="/linkedin.png" alt="LinkedIn" width={32} height={32} />
             </button>
             <button className="footer-icon-button">
-              <Image src="/fly.png" alt="ok" width={32} height={32} />
+              <Image src="/fly.png" alt="Twitter" width={32} height={32} />
             </button>
           </div>
-
-          <div className="grid grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
             <div>
               <h3 className="footer-heading">Alpha Community</h3>
               <div className="flex flex-col gap-2">
@@ -31,7 +30,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-
             <div>
               <h3 className="footer-heading">Alpha Tools</h3>
               <div className="flex flex-col gap-2">
@@ -43,7 +41,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-
             <div>
               <h3 className="footer-heading">Alpha Analysis</h3>
               <div className="flex flex-col gap-2">
@@ -61,7 +58,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-
             <div>
               <h3 className="footer-heading">Crypto and NFT Trading Course</h3>
               <div className="flex flex-col gap-2">
@@ -75,12 +71,10 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
-        <div className="flex justify-between items-center border-t border-[#4D9CD0] pt-4">
+        <div className="flex flex-col md:flex-row justify-between items-center border-t border-[#4D9CD0] pt-4 gap-4">
           <span className="text-sm text-gray-400">Copyright © 2024 Lorem</span>
-
-          <div className="flex space-x-4">
-            <button className="px-4 py-2 rounded-full border border-[#26dbd6] bg-transparent text-white flex items-center">
+          <div className="flex flex-wrap justify-center gap-2 md:space-x-4">
+            <button className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-[#26dbd6] bg-transparent text-white flex items-center text-xs md:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -98,7 +92,7 @@ export default function Footer() {
               </svg>
               English
             </button>
-            <button className="px-4 py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center">
+            <button className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center text-xs md:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -116,7 +110,7 @@ export default function Footer() {
               </svg>
               Spanish
             </button>
-            <button className="px-4 py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center">
+            <button className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center text-xs md:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -134,7 +128,7 @@ export default function Footer() {
               </svg>
               Dutch
             </button>
-            <button className="px-4 py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center">
+            <button className="px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-[#1e3a5f] bg-transparent text-white flex items-center text-xs md:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"

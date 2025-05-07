@@ -1,23 +1,55 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface FilterDropdownProps {
   column: string
   onClose: () => void
+  position?: { top: number; left: number }
 }
 
-export default function FilterDropdown({ column, onClose }: FilterDropdownProps) {
+export default function FilterDropdown({ column, onClose, position }: FilterDropdownProps) {
   const [condition, setCondition] = useState("Below")
   const [type, setType] = useState("Value")
   const [value, setValue] = useState("16084481")
+  const [dropdownPosition, setDropdownPosition] = useState<{ left: string | number; right?: string | number }>({
+    left: 0,
+  })
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Adjust position to prevent going off-screen
+  useEffect(() => {
+    if (dropdownRef.current && position) {
+      const dropdownWidth = dropdownRef.current.offsetWidth
+      const viewportWidth = window.innerWidth
+
+      // Check if dropdown would go off the right edge of the screen
+      if (position.left + dropdownWidth > viewportWidth - 20) {
+        // Position from the right instead of left
+        setDropdownPosition({
+          right: viewportWidth - position.left,
+          left: "auto",
+        })
+      } else {
+        // Normal left positioning
+        setDropdownPosition({ left: position.left })
+      }
+    }
+  }, [position])
 
   return (
-    <div className="absolute z-50 w-[470px] rounded-xl bg-[#0a1929] border border-[#1e3a5f] shadow-xl">
+    <div
+      ref={dropdownRef}
+      className="fixed z-50 w-[300px] md:w-[470px] rounded-xl bg-[#0a1929] border border-[#1e3a5f] shadow-xl mt-4"
+      style={{
+        top: position?.top || 0,
+        left: dropdownPosition.left,
+        right: dropdownPosition.right,
+      }}
+    >
       <div className="p-4 space-y-4 text-sm text-white">
         <div className="text-gray-200 font-medium">Symbol Type</div>
-
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <div className="text-gray-400">Condition</div>
             <div className="relative">
@@ -37,7 +69,6 @@ export default function FilterDropdown({ column, onClose }: FilterDropdownProps)
               </div>
             </div>
           </div>
-
           <div className="space-y-1">
             <div className="text-gray-400">Type</div>
             <div className="relative">
@@ -58,7 +89,6 @@ export default function FilterDropdown({ column, onClose }: FilterDropdownProps)
             </div>
           </div>
         </div>
-
         <div className="space-y-1">
           <div className="text-gray-400">Value</div>
           <input
