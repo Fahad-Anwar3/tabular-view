@@ -8,7 +8,7 @@ interface FilterDropdownProps {
   position?: { top: number; left: number }
 }
 
-export default function FilterDropdown({ column, onClose, position }: FilterDropdownProps) {
+export default function FilterDropdown({ position, onClose }: FilterDropdownProps) {
   const [condition, setCondition] = useState("Below")
   const [type, setType] = useState("Value")
   const [value, setValue] = useState("16084481")
@@ -23,24 +23,37 @@ export default function FilterDropdown({ column, onClose, position }: FilterDrop
       const dropdownWidth = dropdownRef.current.offsetWidth
       const viewportWidth = window.innerWidth
 
-      // Check if dropdown would go off the right edge of the screen
       if (position.left + dropdownWidth > viewportWidth - 20) {
-        // Position from the right instead of left
         setDropdownPosition({
           right: viewportWidth - position.left,
           left: "auto",
         })
       } else {
-        // Normal left positioning
         setDropdownPosition({ left: position.left })
       }
     }
   }, [position])
 
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        onClose()
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [onClose])
+
   return (
     <div
       ref={dropdownRef}
-      className="fixed z-50 w-[300px] md:w-[470px] rounded-xl bg-[#0a1929] border border-[#1e3a5f] shadow-xl mt-4"
+      role="dialog"
+      aria-modal="true"
+      className="fixed z-50 w-[300px] md:w-[470px] rounded-xl bg-[#0a1929] border border-[#1e3a5f] shadow-xl mt-4 transition-all duration-200"
       style={{
         top: position?.top || 0,
         left: dropdownPosition.left,
