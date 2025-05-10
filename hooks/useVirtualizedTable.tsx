@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useCallback, useState, useEffect, useRef } from "react"
 
 interface UseVirtualizedTableOptions {
@@ -22,7 +21,6 @@ export function useVirtualizedTable({ itemCount, itemHeight, overscan = 3, conta
   const [containerHeight, setContainerHeight] = useState(0)
   const requestRef = useRef<number | null>(null)
 
-  // Calculate visible items based on scroll position with optimized performance
   const calculateVisibleItems = useCallback(() => {
     if (!containerRef.current) return { virtualItems: [], startIndex: 0, endIndex: 0 }
 
@@ -52,9 +50,10 @@ export function useVirtualizedTable({ itemCount, itemHeight, overscan = 3, conta
 
   const [state, setState] = useState(() => calculateVisibleItems())
 
-  // Update visible items when scroll position changes with requestAnimationFrame for better performance
   useEffect(() => {
     if (!containerRef.current) return
+
+    const container = containerRef.current
 
     const handleScroll = () => {
       if (requestRef.current) {
@@ -62,23 +61,27 @@ export function useVirtualizedTable({ itemCount, itemHeight, overscan = 3, conta
       }
 
       requestRef.current = requestAnimationFrame(() => {
-        setState(calculateVisibleItems())
+        setState((prevState) => {
+          const newState = calculateVisibleItems()
+          return JSON.stringify(prevState) === JSON.stringify(newState) ? prevState : newState
+        })
       })
     }
 
-    const container = containerRef.current
+    const resizeObserver = new ResizeObserver(handleScroll)
+    resizeObserver.observe(container)
+
     container.addEventListener("scroll", handleScroll)
     window.addEventListener("resize", handleScroll)
 
-    // Initial calculation
+    // Initial run
     handleScroll()
 
     return () => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current)
-      }
+      if (requestRef.current) cancelAnimationFrame(requestRef.current)
       container.removeEventListener("scroll", handleScroll)
       window.removeEventListener("resize", handleScroll)
+      resizeObserver.disconnect()
     }
   }, [calculateVisibleItems, containerRef])
 
