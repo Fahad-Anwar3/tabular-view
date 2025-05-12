@@ -7,6 +7,7 @@ import { stockData, type StockData } from "../data/stockData"
 import Image from "next/image"
 import FilterDropdown from "../components/FilterDropdown"
 import { useVirtualizedTable } from "../hooks/useVirtualizedTable"
+import { useRouter } from "next/navigation"
 
 const columnWidths = {
   symbol: "120px",
@@ -24,6 +25,12 @@ const columnWidths = {
 }
 
 const VirtualRow = memo(({ row, style }: { row: StockData; style: React.CSSProperties }) => {
+  const router = useRouter()
+
+  const handleRowClick = () => {
+    router.push("/wallet-details")
+  }
+
   const renderRatingIcon = (rating: string) => {
     if (rating.includes("Buy")) return <ChevronUp className="h-4 w-4 mr-1 text-[#26a0da]" />
     if (rating.includes("Sell")) return <ChevronDown className="h-4 w-4 mr-1 text-[#ff5252]" />
@@ -43,14 +50,25 @@ const VirtualRow = memo(({ row, style }: { row: StockData; style: React.CSSPrope
   }
 
   return (
-    <tr className="border-b border-[#1e3a5f] absolute w-full" style={{ ...style, height: "48px" }}>
+    <tr
+      className="border-b border-[#1e3a5f] absolute w-full hover:bg-[#1e3a5f] cursor-pointer"
+      style={{ ...style, height: "48px" }}
+      onClick={handleRowClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleRowClick()
+        }
+      }}
+    >
       {Object.keys(columnWidths).map((key) => {
         const value = row[key as keyof StockData]
         let content
         if (key === "symbol") {
           content = (
             <div className="flex items-center">
-             <Image src="/nvidia 1.png" alt="n" width={20} height={20} />
+              <Image src="/nvidia 1.png" alt="n" width={20} height={20} />
               <span className="font-medium text-sm text-white pl-2">{value}</span>
             </div>
           )
@@ -78,10 +96,13 @@ const VirtualRow = memo(({ row, style }: { row: StockData; style: React.CSSPrope
         return (
           <td
             key={key}
-            className={`py-3  px-4 border-r border-[#1e3a5f] ${
+            className={`py-3 px-4 border-r border-[#1e3a5f] ${
               key === "company" || key === "sector" || key.includes("Rating") ? "text-left" : "text-right"
             }`}
-            style={{ width: columnWidths[key as keyof typeof columnWidths], minWidth: columnWidths[key as keyof typeof columnWidths] }}
+            style={{
+              width: columnWidths[key as keyof typeof columnWidths],
+              minWidth: columnWidths[key as keyof typeof columnWidths],
+            }}
           >
             {content}
           </td>
@@ -99,7 +120,9 @@ export default function VirtualizedTable() {
   const tableRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLTableSectionElement>(null)
 
-  const [visibleColumns, setVisibleColumns] = useState(Object.fromEntries(Object.keys(columnWidths).map(key => [key, true])))
+  const [visibleColumns, setVisibleColumns] = useState(
+    Object.fromEntries(Object.keys(columnWidths).map((key) => [key, true])),
+  )
 
   useEffect(() => {
     const handleResize = () => {
@@ -135,7 +158,7 @@ export default function VirtualizedTable() {
           sector: true,
         })
       } else {
-        setVisibleColumns(Object.fromEntries(Object.keys(columnWidths).map(key => [key, true])))
+        setVisibleColumns(Object.fromEntries(Object.keys(columnWidths).map((key) => [key, true])))
       }
     }
 
@@ -169,8 +192,17 @@ export default function VirtualizedTable() {
   }
 
   const renderFilterIcon = (column: string) => (
-    <div className="w-6 h-6 flex items-center justify-center ml-1 cursor-pointer" onClick={(e) => handleFilterClick(column, e)}>
-      <Image src="/filter.svg" alt="filter" width={16} height={16} className={`opacity-70 ${activeFilter === column ? "opacity-100" : ""}`} />
+    <div
+      className="w-6 h-6 flex items-center justify-center ml-1 cursor-pointer"
+      onClick={(e) => handleFilterClick(column, e)}
+    >
+      <Image
+        src="/filter.svg"
+        alt="filter"
+        width={16}
+        height={16}
+        className={`opacity-70 ${activeFilter === column ? "opacity-100" : ""}`}
+      />
     </div>
   )
 
@@ -201,16 +233,17 @@ export default function VirtualizedTable() {
                   className={`py-3 px-4 text-[#26dbd6] font-medium text-sm uppercase sticky top-0 border-b border-r border-[#1e3a5f] ${
                     col === "company" || col === "sector" || col.includes("Rating") ? "text-left" : "text-right"
                   }`}
-                  style={{ width: columnWidths[col as keyof typeof columnWidths], minWidth: columnWidths[col as keyof typeof columnWidths] }}
+                  style={{
+                    width: columnWidths[col as keyof typeof columnWidths],
+                    minWidth: columnWidths[col as keyof typeof columnWidths],
+                  }}
                 >
-                  <div className="flex items-center justify-between ">
+                  <div className="flex items-center justify-between">
                     <span>{col.replace(/([A-Z])/g, " $1").toUpperCase()}</span>
-                    {["company", "chg", "volumePrice", "sector"].includes(col)
-                      ? renderFilterIcon(col)
-                      : null}
+                    {["company", "chg", "volumePrice", "sector"].includes(col) ? renderFilterIcon(col) : null}
                   </div>
                 </th>
-              ) : null
+              ) : null,
             )}
           </tr>
         </thead>
