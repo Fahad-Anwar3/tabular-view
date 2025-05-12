@@ -28,7 +28,7 @@ const VirtualRow = memo(({ row, style }: { row: StockData; style: React.CSSPrope
   const router = useRouter()
 
   const handleRowClick = () => {
-    router.push(`/trader/${row.id}`)
+    router.push("/wallet-details")
   }
 
   const renderRatingIcon = (rating: string) => {
