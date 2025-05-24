@@ -1,7 +1,7 @@
 import { CopyIcon, ChevronDown } from "lucide-react"
 
 export default function TokenPnLTable() {
-  // Static data for token PnL
+  
   const tokenPnl = [
     {
       id: 1,

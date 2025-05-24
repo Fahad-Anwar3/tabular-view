@@ -4,10 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 
 export default function PortfolioTable() {
-  const [timeFilter, setTimeFilter] = useState("30d")
-
-  // Time filter options
-  const timeFilters = ["1d", "7d", "30d", "All"]
+  
 
   // Static data for portfolio tokens
   const portfolioTokens = [
@@ -95,20 +92,7 @@ export default function PortfolioTable() {
 
   return (
     <div className="bg-[#000B13] rounded-xl border border-[#284c8f] overflow-hidden p-2 sm:p-4">
-      {/* Time Filter */}
-      <div className="flex space-x-2 sm:space-x-4 mb-4 sm:mb-6 overflow-x-auto pb-2 scrollbar-hide">
-        {timeFilters.map((filter) => (
-          <button
-            key={filter}
-            className={`rounded-full px-2 sm:px-3 py-1 text-xs whitespace-nowrap flex-shrink-0 ${
-              timeFilter === filter ? "bg-[#26DBD6] text-[#000B13]" : "border border-[#1a2436] text-[#4A5568]"
-            }`}
-            onClick={() => setTimeFilter(filter)}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
+     
 
       {/* Table Headers - Desktop */}
       <div className="hidden md:grid grid-cols-4 gap-2 sm:gap-4 mb-2 sm:mb-4 text-[#26DBD6] text-xs font-bold px-2 sm:px-4 uppercase">
