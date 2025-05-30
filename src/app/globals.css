@@ -67,19 +67,19 @@ body {
   }
 
   .header-button {
-    @apply bg-transparent hover:bg-[#1e3a5f] text-white p-2 rounded-full;
+    @apply bg-transparent hover:bg-[#1e3a5f] text-white p-2 rounded-full transition-colors;
   }
 
   .header-select {
-    @apply bg-[#0f2132] border border-[#1e3a5f] text-white rounded px-2 py-1 text-sm;
+    @apply bg-[#0f2132] border border-[#1e3a5f] text-white rounded px-2 py-1 text-sm focus:outline-none focus:border-[#26dbd6];
   }
 
   .search-input {
-    @apply bg-[#0a1929] border border-[#1e3a5f] text-white rounded px-3 py-1 text-sm;
+    @apply bg-[#0a1929] border border-[#1e3a5f] text-white rounded px-3 py-1 text-sm focus:outline-none focus:border-[#26dbd6];
   }
 
   .footer-link {
-    @apply text-gray-400 hover:text-white;
+    @apply text-gray-400 hover:text-white transition-colors;
   }
 
   .footer-heading {
@@ -87,10 +87,162 @@ body {
   }
 
   .footer-icon-button {
-    @apply w-8 h-8 rounded-full border border-white/30 flex items-center justify-center hover:bg-[#1e3a5f];
+    @apply w-8 h-8 rounded-full border border-white/30 flex items-center justify-center hover:bg-[#1e3a5f] transition-colors;
   }
 
   .language-button {
-    @apply text-sm text-gray-400 hover:text-white;
+    @apply text-sm text-gray-400 hover:text-white transition-colors;
   }
+}
+
+/* Hide scrollbars completely while maintaining functionality */
+.scrollbar-hidden {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* Remove the old scrollbar-thin class styles since we're hiding them */
+.scrollbar-thin {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+/* Smooth scrolling optimizations */
+.overflow-y-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Prevent layout shifts during loading */
+.table-fixed {
+  table-layout: fixed;
+}
+
+/* Optimize text rendering */
+td,
+th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  will-change: auto;
+}
+
+/* Smooth animations */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Prevent content jumping */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Optimize virtual scrolling */
+.relative {
+  contain: layout style paint;
+}
+
+/* Stable positioning for virtual items */
+tr[style*="transform"] {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+/* Better touch scrolling on mobile */
+@supports (-webkit-touch-callout: none) {
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent reflow during scroll */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+/* Optimize loading states */
+.loading-container {
+  contain: layout style;
+}
+
+/* Ensure perfect column alignment */
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+/* Ensure table cells don't break layout */
+th,
+td {
+  box-sizing: border-box;
+}
+
+/* Fix for ultra-wide screens */
+@media (min-width: 3840px) {
+  .max-w-\[4000px\] {
+    max-width: 4000px !important;
+  }
+}
+
+/* Hide scrollbars on all container elements */
+.hide-scrollbar {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+  width: 0;
+  height: 0;
+  background: transparent;
 }
